@@ -46,7 +46,11 @@ Gradient descent is the backbone of training most machine learning models. It's 
 The cost function (or loss function) measures how wrong the model's predictions are compared to the true labels. A common choice for regression tasks, and a simple one to start with for classification, is the **Mean Squared Error (MSE)**.
 
 The formula for MSE is:
-$$ L(W, b) = \frac{1}{m} \sum_{i=1}^{m} (y^{(i)} - \hat{y}^{(i)})^2 $$
+
+```math
+L(W, b) = \frac{1}{m} \sum_{i=1}^{m} (y^{(i)} - \hat{y}^{(i)})^2 
+```
+
 Where:
 - $m$ is the number of training examples.
 - $y^{(i)}$ is the true label for the $i$-th example.
@@ -86,7 +90,9 @@ Let's derive this for a single weight, $w_j$. We'll use the chain rule.
 
 **The Chain Rule:**
 We want to find $\frac{\partial L}{\partial w_j}$. Using the chain rule, we get:
-$$ \frac{\partial L}{\partial w_j} = \frac{\partial L}{\partial \hat{y}} \cdot \frac{\partial \hat{y}}{\partial z} \cdot \frac{\partial z}{\partial w_j} $$
+```math
+ \frac{\partial L}{\partial w_j} = \frac{\partial L}{\partial \hat{y}} \cdot \frac{\partial \hat{y}}{\partial z} \cdot \frac{\partial z}{\partial w_j} 
+```
 
 You can do a similar thing for computing $\frac{\partial L}{\partial b}$, or decide to ignore the bias and leave it to 0 in the following steps.
 
@@ -159,7 +165,9 @@ def forward_pass(X, weights, bias):
 The sigmoid function squashes its input to a value between 0 and 1. This is useful for binary classification because the output can be interpreted as a probability.
 
 The formula is:
-$$ \sigma(x) = \frac{1}{1 + e^{-x}} $$
+```math
+ \sigma(x) = \frac{1}{1 + e^{-x}} 
+```
 
 ```python
 def sigmoid(x):
@@ -216,8 +224,12 @@ def calculate_gradients(X, y_true, y_pred):
 This is the core of "learning". We take a step in the opposite direction of the gradient to minimize the cost.
 
 The update rules are:
-$$ W := W - \alpha \cdot dW $$
-$$ b := b - \alpha \cdot db $$
+```math
+ W := W - \alpha \cdot dW 
+ ```
+```math
+ b := b - \alpha \cdot db 
+ ```
 
 Where $\alpha$ is the **learning rate**, a hyperparameter that controls the step size.
 
