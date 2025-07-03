@@ -85,7 +85,7 @@ Let's derive this for a single weight, $w_j$. We'll use the chain rule.
 **Recall the components:**
 -  **Cost Function (L):**
 ```math
-L = 1/N \sum [y - \hat{y}]^2
+L = \frac{1}{N} \sum_i (y_i - \hat{y}_i)^2
 ```
 -  **Prediction ($\hat{y}$):** This is the output of our neuron, which is the activation of `z`.
 ```math
@@ -141,7 +141,10 @@ def initialize_weights(input_dim):
 
 The forward pass calculates the neuron's output. It's a two-step process:
 1.  **Linear Step:** Compute $z = X \cdot W + b$.
-2.  **Activation Step:** Apply the activation function, $\hat{y} = \sigma(z)$.
+2.  **Activation Step:** Apply the activation function:
+```math
+\hat{y} = \sigma(z)
+```
 
 ```python
 def forward_pass(X, weights, bias):
@@ -350,9 +353,7 @@ plt.show()
 
 To evaluate our model, we'll calculate its **accuracy**. Accuracy is the percentage of correctly classified data points.
 
-Since our neuron outputs a probability (a value between 0 and 1), we need to convert it to a binary prediction (0 or 1). A common way to do this is to use a **decision threshold** of 0.5.
-- If $`\hat{y} \ge 0.5`$, we predict class 1.
-- If $`\hat{y} < 0.5`$, we predict class 0.
+Since our neuron outputs a probability (a value between 0 and 1), we need to convert it to a binary prediction (0 or 1). A common way to do this is to use a **decision threshold** of 0.5: if $`\hat{y} \ge 0.5`$, we predict class 1; else if $`\hat{y} < 0.5`$, we predict class 0.
 
 ```python
 def evaluate_neuron(X, y, trained_weights, trained_bias):
