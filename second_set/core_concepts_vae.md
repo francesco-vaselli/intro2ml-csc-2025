@@ -1,4 +1,4 @@
-# Machine Learning - Set Y: Hands-on VAE Concepts & Latent Space
+# Machine Learning - Set 2: Hands-on VAE Concepts & Latent Space
 
 **Objective:** To understand and compute key components of a Variational Autoencoder (VAE) using basic numerical operations. In this exercise, you will explore the reparameterization trick, calculate loss components (Reconstruction and KL Divergence), simulate latent variable collapse, and consider the role of the $\beta$-VAE.
 
