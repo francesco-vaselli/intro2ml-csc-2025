@@ -87,7 +87,10 @@ Let's derive this for a single weight, $w_j$. We'll use the chain rule.
 ```math
 L = 1/N \sum [y - \hat{y}]^2
 ```
--  **Prediction ($\hat{y}$):** This is the output of our neuron, which is the activation of `z`. $\hat{y} = \sigma(z)$
+-  **Prediction ($\hat{y}$):** This is the output of our neuron, which is the activation of `z`.
+```math
+\hat{y} = \sigma(z)
+```
 -  **Activation Function ($\sigma$):** We use the sigmoid function: $\sigma(z) = \frac{1}{1 + e^{-z}}$
 -  **Linear Combination (z):** $z = W^T X + b = w_1x_1 + w_2x_2 + ... + w_nx_n + b$
 
@@ -102,7 +105,7 @@ You can do a similar thing for computing $\frac{\partial L}{\partial b}$, or dec
 **Your task:**
 Calculate each of the three partial derivatives on the right-hand side and combine them to find the final expression for $\frac{\partial L}{\partial w_j}$.
 
-*Hint: The derivative of the sigmoid function is $\sigma'(z) = \sigma(z)(1 - \sigma(z))$.*
+*Hint: The derivative of the sigmoid function is* $\sigma'(z) = \sigma(z)(1 - \sigma(z))$.
 
 
 ## 2. Implementing a Single Neuron
