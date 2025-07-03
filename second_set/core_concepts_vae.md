@@ -118,7 +118,7 @@ e. **Report your calculated values for $L_{recon}$, $L_{KL}$, and $Loss$.**
 
 ## 4. Simulating Latent Collapse (Scenario 2)
 
-Now, we simulate a scenario where the encoder is "broken" and prioritizes matching the prior $\mathcal{N}(0, I)$ too strongly, ignoring the input data. We will use new encoder parameters, but keep the **original data** `$X_{true}$` and the **original decoder** parameters from Exercise 2.
+Now, we simulate a scenario where the encoder is "broken" and prioritizes matching the prior $\mathcal{N}(0, I)$ too strongly, ignoring the input data. We will use new encoder parameters, but keep the **original data** `X_true` and the **original decoder** parameters from Exercise 2.
 
 *   **New Encoder Parameters ('Collapse'):**
 ```math
