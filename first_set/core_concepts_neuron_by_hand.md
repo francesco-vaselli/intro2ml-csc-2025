@@ -345,8 +345,8 @@ plt.show()
 To evaluate our model, we'll calculate its **accuracy**. Accuracy is the percentage of correctly classified data points.
 
 Since our neuron outputs a probability (a value between 0 and 1), we need to convert it to a binary prediction (0 or 1). A common way to do this is to use a **decision threshold** of 0.5.
-- If $\hat{y} \ge 0.5$, we predict class 1.
-- If $\hat{y} < 0.5$, we predict class 0.
+- If $`\hat{y} \ge 0.5`$, we predict class 1.
+- If $`\hat{y} < 0.5`$, we predict class 0.
 
 ```python
 def evaluate_neuron(X, y, trained_weights, trained_bias):
