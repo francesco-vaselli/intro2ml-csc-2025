@@ -84,9 +84,9 @@ Let's derive this for a single weight, $w_j$. We'll use the chain rule.
 
 **Recall the components:**
 -  **Cost Function (L):**
-      ```math
-      L = 1/N \sum [y - \hat{y}]^2
-      ```
+```math
+L = 1/N \sum [y - \hat{y}]^2
+```
 -  **Prediction ($\hat{y}$):** This is the output of our neuron, which is the activation of `z`. $\hat{y} = \sigma(z)$
 -  **Activation Function ($\sigma$):** We use the sigmoid function: $\sigma(z) = \frac{1}{1 + e^{-z}}$
 -  **Linear Combination (z):** $z = W^T X + b = w_1x_1 + w_2x_2 + ... + w_nx_n + b$
