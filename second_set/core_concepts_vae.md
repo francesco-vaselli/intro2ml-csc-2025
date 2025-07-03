@@ -10,16 +10,16 @@
 
 ### **Notation**
 
-*   $\bm{x} \in \mathbb{R}^2$: Input data vector. `$X_true$` is the set of $N$input vectors $\{\bm{x}_1, ..., \bm{x}_N\}$.
-*   $\bm{\mu} \in \mathbb{R}^2$: Mean vector of the latent distribution $q(z|x)$.
-*   $\bm{\sigma} \in \mathbb{R}^2$: Standard deviation vector of the latent distribution $q(z|x)$.
-*   $\log \bm{\sigma}^2 \in \mathbb{R}^2$: Log-variance vector (element-wise log of variance).
-*   $\bm{z} \in \mathbb{R}^2$: Latent space vector. `$Z$` is the set of $N$latent vectors $\{\bm{z}_1, ..., \bm{z}_N\}$.
-*   $\bm{\epsilon} \in \mathbb{R}^2$: Random noise vector sampled from the standard normal distribution $\mathcal{N}(\bm{0}, I)$.
-*   $\bm{x}' \in \mathbb{R}^2$: Reconstructed data vector. `$X_prime$` is the set of $N$reconstructed vectors.
-*   $\mathcal{N}(\bm{\mu}, \Sigma)$: A multivariate Gaussian distribution with mean $\bm{\mu}$and covariance $\Sigma$.
+*   $x \in \mathbb{R}^2$: Input data vector. `$X_true$` is the set of $N$ input vectors $\{x_1, ..., x_N \}$.
+*   $\mu \in \mathbb{R}^2$: Mean vector of the latent distribution $q(z|x)$.
+*   $\sigma \in \mathbb{R}^2$: Standard deviation vector of the latent distribution $q(z|x)$.
+*   $\log \sigma^2 \in \mathbb{R}^2$: Log-variance vector (element-wise log of variance).
+*   $z \in \mathbb{R}^2$: Latent space vector. `$Z$` is the set of $N$latent vectors $\{z_1, ..., z_N\}$.
+*   $\epsilon \in \mathbb{R}^2$: Random noise vector sampled from the standard normal distribution $\mathcal{N}(0, I)$.
+*   $x' \in \mathbb{R}^2$: Reconstructed data vector. `$X_prime$` is the set of $N$reconstructed vectors.
+*   $\mathcal{N}(\mu, \Sigma)$: A multivariate Gaussian distribution with mean $\mu $and covariance $\Sigma$.
 *   $\mathbf{W}_{\cdot}$: Weight matrices (all are 2x2).
-*   $\bm{b}_{\cdot}$: Bias vectors (all are 2D).
+*   $b_{\cdot}$: Bias vectors (all are 2D).
 *   `@`: Matrix multiplication (e.g., `W @ x`).
 *   `odot`: Element-wise (Hadamard) product.
 *   $D_{KL}(q || p)$: The Kullback-Leibler (KL) divergence between distributions $q$ and $p$.
@@ -28,10 +28,10 @@
 
 ## 1. Data Generation
 
-a. Generate $N=1000$ data points, forming the dataset `$X_true$`. Each point $\bm{x}_i$ should be sampled from a 2D Gaussian distribution $\mathcal{N}(\bm{\mu}_{data}, \Sigma_{data})$ with:
-   $$
-   \bm{\mu}_{data} = \begin{pmatrix} 3.0 \\ 2.0 \end{pmatrix}, \quad \Sigma_{data} = \begin{pmatrix} 1.0 & 0.0 \\ 0.0 & 1.0 \end{pmatrix}
-   $$
+a. Generate $N=1000$ data points, forming the dataset `$X_true$`. Each point $x_i$ should be sampled from a 2D Gaussian distribution $\mathcal{N}(\mu_{data}, \Sigma_{data})$ with:
+```math
+\mu_{data} = \begin{pmatrix} 3.0 \\ 2.0 \end{pmatrix}, \quad \Sigma_{data} = \begin{pmatrix} 1.0 & 0.0 \\ 0.0 & 1.0 \end{pmatrix}
+```
    Store these points in an $N \times 2$ array or matrix.
 
 b. *Optional Visualization:* Create a scatter plot of your generated data points `$X_true$`.
@@ -40,82 +40,84 @@ b. *Optional Visualization:* Create a scatter plot of your generated data points
 
 We will simulate a VAE's Encoder and Decoder with the following fixed parameters.
 
-*   **Encoder:** The encoder maps an input $\bm{x}$ to the parameters of a latent distribution.
-    -   Mean: $\bm{\mu} = \mathbf{W}_{\mu} \bm{x} + \bm{b}_{\mu}$
-    -   Log-variance: $\log \bm{\sigma}^2 = \mathbf{W}_{ls} \bm{x} + \bm{b}_{ls}$
+*   **Encoder:** The encoder maps an input $x$ to the parameters of a latent distribution.
+    -   Mean: $\mu = \mathbf{W}_{\mu} x + b_{\mu}$
+    -   Log-variance: $\log \sigma^2 = \mathbf{W}_{ls} x + b_{ls}$
     -   Parameters:
-        $$
-        \mathbf{W}_{\mu} = \begin{pmatrix} 0.5 & 0.0 \\ 0.0 & 0.5 \end{pmatrix}, \quad \bm{b}_{\mu} = \begin{pmatrix} -0.5 \\ -0.25 \end{pmatrix}
-        $$
-        $$
-        \mathbf{W}_{ls} = \begin{pmatrix} 0.1 & 0.0 \\ 0.0 & 0.1 \end{pmatrix}, \quad \bm{b}_{ls} = \begin{pmatrix} -1.0 \\ -1.0 \end{pmatrix}
-        $$
+        ```
+        \mathbf{W}_{\mu} = \begin{pmatrix} 0.5 & 0.0 \\ 0.0 & 0.5 \end{pmatrix}, \quad b_{\mu} = \begin{pmatrix} -0.5 \\ -0.25 \end{pmatrix}
+        ```
+        ```
+        \mathbf{W}_{ls} = \begin{pmatrix} 0.1 & 0.0 \\ 0.0 & 0.1 \end{pmatrix}, \quad b_{ls} = \begin{pmatrix} -1.0 \\ -1.0 \end{pmatrix}
+        ```
 
-*   **Decoder:** The decoder maps a latent vector $\bm{z}$ back to a reconstructed data point $\bm{x}'$.
-    -   Reconstruction: $\bm{x}' = \mathbf{W}_{dec} \bm{z} + \bm{b}_{dec}$
+*   **Decoder:** The decoder maps a latent vector $z$ back to a reconstructed data point $x'$.
+    -   Reconstruction: $x' = \mathbf{W}_{dec} z + b_{dec}$
     -   Parameters:
-        $$
-        \mathbf{W}_{dec} = \begin{pmatrix} 1.4 & 0.0 \\ 0.0 & 1.4 \end{pmatrix}, \quad \bm{b}_{dec} = \begin{pmatrix} 1.5 \\ 1.0 \end{pmatrix}
-        $$
+        ```
+        \mathbf{W}_{dec} = \begin{pmatrix} 1.4 & 0.0 \\ 0.0 & 1.4 \end{pmatrix}, \quad b_{dec} = \begin{pmatrix} 1.5 \\ 1.0 \end{pmatrix}
+        ```
 
 > *Note: These parameters are fixed for this exercise. In a real VAE, these would be learned during training.*
 
 ## 3. VAE Forward Pass & Loss Calculation (Scenario 1)
 
-Perform the following calculations for each data point $\bm{x}_i$ in `$X_true$` using the parameters from Exercise 2.
+Perform the following calculations for each data point $x_i$ in `$X_true$` using the parameters from Exercise 2.
 
-a. **Encoding:** For each $\bm{x}_i$, calculate the mean vector $\bm{\mu}_i$ and the log-variance vector $\log \bm{\sigma}^2_i$.
+a. **Encoding:** For each $x_i$, calculate the mean vector $\mu_i$ and the log-variance vector $\log \sigma^2_i$.
 
 b. **Reparameterization Trick:**
-   i.  Calculate the standard deviation vectors $\bm{\sigma}_i$ using the formula:
-       $\bm{\sigma}_i = \exp(0.5 \odot \log \bm{\sigma}^2_i)$
+   i.  Calculate the standard deviation vectors $\sigma_i$ using the formula:
+       $\sigma_i = \exp(0.5 \odot \log \sigma^2_i)$
 
-   ii. Sample $N=1000$ random noise vectors, $\{\bm{\epsilon}_1, ..., \bm{\epsilon}_N\}$, where each $\bm{\epsilon}_i \sim \mathcal{N}(\bm{0}, I)$.
+   ii. Sample $N=1000$ random noise vectors, $\{\epsilon_1, ..., \epsilon_N\}$, where each $\epsilon_i \sim \mathcal{N}(0, I)$.
 
-   iii. Compute the set of latent vectors $Z = \{\bm{z}_1, ..., \bm{z}_N\}$ using the reparameterization formula:$\bm{z}_i = \bm{\mu}_i + \bm{\sigma}_i \odot \bm{\epsilon}_i$
+   iii. Compute the set of latent vectors $Z = \{z_1, ..., z_N\}$ using the reparameterization formula:$z_i = \mu_i + \sigma_i \odot \epsilon_i$
    *Optional Visualization:* Create a scatter plot of the latent vectors $Z$.
 
-c. **Decoding:** Calculate the reconstructed data points $X_{prime} = \{\bm{x}'_1, ..., \bm{x}'_N\}$ by passing the latent vectors $Z$ through the decoder.
+c. **Decoding:** Calculate the reconstructed data points $X_{prime} = \{x'_1, ..., x'_N\}$ by passing the latent vectors $Z$ through the decoder.
    *Optional Visualization:* Create a scatter plot of the reconstructed points $X_{prime}$. Overlay it on the plot of $X_{true}$ if possible.
 
 d. **Loss Calculation:**
    i.  Calculate the **Reconstruction Loss**. We use the average Mean Squared Error (MSE):
 
-$$L_{recon} = \frac{1}{N} \sum_{i=1}^{N} ||\bm{x}_i - \bm{x}'_i||^2$$
+```math
+L_{recon} = \frac{1}{N} \sum_{i=1}^{N} ||x_i - x'_i||^2
+```
       
-where $||\bm{v}||^2 = v_1^2 + v_2^2$.
+where $||v||^2 = v_1^2 + v_2^2$.
 
-   ii. Calculate the **KL Divergence** for each point with respect to the standard normal prior $\mathcal{N}(\bm{0}, I)$. The formula for a diagonal Gaussian is:
+   ii. Calculate the **KL Divergence** for each point with respect to the standard normal prior $\mathcal{N}(0, I)$. The formula for a diagonal Gaussian is:
 
-$$
+```math
 D_{KL,i} = \frac{1}{2} \sum_{j=1}^{2} (\sigma_{i,j}^2 + \mu_{i,j}^2 - \log(\sigma_{i,j}^2) - 1)
-$$
+```
 
-Remember that $\sigma_{i,j}^2 = \exp((\log \bm{\sigma}^2_i)_j)$.
+Remember that $\sigma_{i,j}^2 = \exp((\log \sigma^2_i)_j)$.
    iii. Calculate the average KL Divergence over all points:
 
-$$
+```math
 L_{KL} = \frac{1}{N} \sum_{i=1}^{N} D_{KL,i}
-$$
+```
        
    iv. Calculate the total **VAE Loss** (this is the negative ELBO, with $\beta=1$):
-$$
+```math
 Loss = L_{recon} + L_{KL}
-$$
+```
 
 e. **Report your calculated values for `$L_{recon}$`, `$L_{KL}$`, and `Loss`.**
 
 ## 4. Simulating Latent Collapse (Scenario 2)
 
-Now, we simulate a scenario where the encoder is "broken" and prioritizes matching the prior $\mathcal{N}(\bm{0}, I)$ too strongly, ignoring the input data. We will use new encoder parameters, but keep the **original data** `$X_{true}$` and the **original decoder** parameters from Exercise 2.
+Now, we simulate a scenario where the encoder is "broken" and prioritizes matching the prior $\mathcal{N}(0, I)$ too strongly, ignoring the input data. We will use new encoder parameters, but keep the **original data** `$X_{true}$` and the **original decoder** parameters from Exercise 2.
 
 *   **New Encoder Parameters ('Collapse'):**
-    $$
-    \mathbf{W}_{\mu, c} = \begin{pmatrix} 0.01 & 0.01 \\ -0.01 & -0.01 \end{pmatrix}, \quad \bm{b}_{\mu, c} = \begin{pmatrix} 0.05 \\ -0.05 \end{pmatrix}
-    $$
-    $$
-    \mathbf{W}_{ls, c} = \begin{pmatrix} 0.0 & 0.0 \\ 0.0 & 0.0 \end{pmatrix}, \quad \bm{b}_{ls, c} = \begin{pmatrix} -0.1 \\ -0.1 \end{pmatrix}
-    $$
+```math
+\mathbf{W}_{\mu, c} = \begin{pmatrix} 0.01 & 0.01 \\ -0.01 & -0.01 \end{pmatrix}, \quad b_{\mu, c} = \begin{pmatrix} 0.05 \\ -0.05 \end{pmatrix}
+```
+```math
+\mathbf{W}_{ls, c} = \begin{pmatrix} 0.0 & 0.0 \\ 0.0 & 0.0 \end{pmatrix}, \quad b_{ls, c} = \begin{pmatrix} -0.1 \\ -0.1 \end{pmatrix}
+```
 
 a. **Repeat the full forward pass and loss calculation from Exercise 3 (steps a-d)**, but using these new 'collapse' encoder parameters instead of the original ones.
 
