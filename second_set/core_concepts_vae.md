@@ -10,13 +10,13 @@
 
 ### **Notation**
 
-*   $x \in \mathbb{R}^2$: Input data vector. `$X_true$` is the set of $N$ input vectors $\{x_1, ..., x_N \}$.
+*   $x \in \mathbb{R}^2$: Input data vector. `X_true` is the set of $N$ input vectors $\{x_1, ..., x_N \}$.
 *   $\mu \in \mathbb{R}^2$: Mean vector of the latent distribution $q(z|x)$.
 *   $\sigma \in \mathbb{R}^2$: Standard deviation vector of the latent distribution $q(z|x)$.
 *   $\log \sigma^2 \in \mathbb{R}^2$: Log-variance vector (element-wise log of variance).
-*   $z \in \mathbb{R}^2$: Latent space vector. `$Z$` is the set of $N$latent vectors $\{z_1, ..., z_N\}$.
+*   $z \in \mathbb{R}^2$: Latent space vector. `Z` is the set of $N$latent vectors $\{z_1, ..., z_N\}$.
 *   $\epsilon \in \mathbb{R}^2$: Random noise vector sampled from the standard normal distribution $\mathcal{N}(0, I)$.
-*   $x' \in \mathbb{R}^2$: Reconstructed data vector. `$X_prime$` is the set of $N$reconstructed vectors.
+*   $x' \in \mathbb{R}^2$: Reconstructed data vector. `X_prime` is the set of $N$reconstructed vectors.
 *   $\mathcal{N}(\mu, \Sigma)$: A multivariate Gaussian distribution with mean $\mu $and covariance $\Sigma$.
 *   $\mathbf{W}_{\cdot}$: Weight matrices (all are 2x2).
 *   $b_{\cdot}$: Bias vectors (all are 2D).
@@ -28,7 +28,7 @@
 
 ## 1. Data Generation
 
-a. Generate $N=1000$ data points, forming the dataset `$X_true$`. Each point $x_i$ should be sampled from a 2D Gaussian distribution $\mathcal{N}(\mu_{data}, \Sigma_{data})$ with:
+a. Generate $N=1000$ data points, forming the dataset `X_true`. Each point $x_i$ should be sampled from a 2D Gaussian distribution $\mathcal{N}(\mu_{data}, \Sigma_{data})$ with:
 ```math
 \mu_{data} = \begin{pmatrix} 3.0 \\ 2.0 \end{pmatrix}, \quad \Sigma_{data} = \begin{pmatrix} 1.0 & 0.0 \\ 0.0 & 1.0 \end{pmatrix}
 ```
@@ -40,16 +40,17 @@ b. *Optional Visualization:* Create a scatter plot of your generated data points
 
 We will simulate a VAE's Encoder and Decoder with the following fixed parameters.
 
-*   **Encoder:** The encoder maps an input $x$ to the parameters of a latent distribution.
-    -   Mean: 
+*   **Encoder:** The encoder maps an input $x$ to the parameters of a latent distribution, with mean and log-variance:
+   
 ```math
 \mu = \mathbf{W}_{\mu} x + b_{\mu}
 ```
-    - Log-variance: 
+   
 ```math
     \log \sigma^2 = \mathbf{W}_{ls} x + b_{ls}
 ```
-    -   Parameters:
+The "parameters" for this case are:
+    
 ```math
 \mathbf{W}_{\mu} = \begin{pmatrix} 0.5 & 0.0 \\ 0.0 & 0.5 \end{pmatrix}, \quad b_{\mu} = \begin{pmatrix} -0.5 \\ -0.25 \end{pmatrix}
 ```
@@ -57,12 +58,11 @@ We will simulate a VAE's Encoder and Decoder with the following fixed parameters
 \mathbf{W}_{ls} = \begin{pmatrix} 0.1 & 0.0 \\ 0.0 & 0.1 \end{pmatrix}, \quad b_{ls} = \begin{pmatrix} -1.0 \\ -1.0 \end{pmatrix}
 ```
 
-*   **Decoder:** The decoder maps a latent vector $z$ back to a reconstructed data point $x'$.
-    -   Reconstruction:
+*   **Decoder:** The decoder maps a latent vector $z$ back to a reconstructed data point $x'$:
 ```math
 x' = \mathbf{W}_{dec} z + b_{dec}
 ```
-    -   Parameters:
+
 ```math
 \mathbf{W}_{dec} = \begin{pmatrix} 1.4 & 0.0 \\ 0.0 & 1.4 \end{pmatrix}, \quad b_{dec} = \begin{pmatrix} 1.5 \\ 1.0 \end{pmatrix}
 ```
@@ -71,7 +71,7 @@ x' = \mathbf{W}_{dec} z + b_{dec}
 
 ## 3. VAE Forward Pass & Loss Calculation (Scenario 1)
 
-Perform the following calculations for each data point $x_i$ in `$X_true$` using the parameters from Exercise 2.
+Perform the following calculations for each data point $x_i$ in `X_true` using the parameters from Exercise 2.
 
 a. **Encoding:** For each $x_i$, calculate the mean vector $\mu_i$ and the log-variance vector $\log \sigma^2_i$.
 
@@ -81,11 +81,11 @@ b. **Reparameterization Trick:**
 
    ii. Sample $N=1000$ random noise vectors, $\{\epsilon_1, ..., \epsilon_N\}$, where each $\epsilon_i \sim \mathcal{N}(0, I)$.
 
-   iii. Compute the set of latent vectors $Z = \{z_1, ..., z_N\}$ using the reparameterization formula:$z_i = \mu_i + \sigma_i \odot \epsilon_i$
+   iii. Compute the set of latent vectors $Z = \{z_1, ..., z_N\}$ using the reparameterization formula: $z_i = \mu_i + \sigma_i \odot \epsilon_i$
    *Optional Visualization:* Create a scatter plot of the latent vectors $Z$.
 
 c. **Decoding:** Calculate the reconstructed data points $X_{prime} = \{x'_1, ..., x'_N\}$ by passing the latent vectors $Z$ through the decoder.
-   *Optional Visualization:* Create a scatter plot of the reconstructed points $X_{prime}$. Overlay it on the plot of $X_{true}$ if possible.
+   *Optional Visualization:* Create a scatter plot of the reconstructed points `X_prime` . Overlay it on the plot of `X_true` if possible.
 
 d. **Loss Calculation:**
    i.  Calculate the **Reconstruction Loss**. We use the average Mean Squared Error (MSE):
@@ -114,7 +114,7 @@ L_{KL} = \frac{1}{N} \sum_{i=1}^{N} D_{KL,i}
 Loss = L_{recon} + L_{KL}
 ```
 
-e. **Report your calculated values for `$L_{recon}$`, `$L_{KL}$`, and `Loss`.**
+e. **Report your calculated values for $L_{recon}$, $L_{KL}$, and $Loss$.**
 
 ## 4. Simulating Latent Collapse (Scenario 2)
 
