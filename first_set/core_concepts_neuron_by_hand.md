@@ -137,7 +137,31 @@ def initialize_weights(input_dim):
     return weights, bias
 ```
 
-### 2b) Implement the forward pass for a single neuron.
+### 2b) Implement the sigmoid activation function.
+
+The sigmoid function squashes its input to a value between 0 and 1. This is useful for binary classification because the output can be interpreted as a probability.
+
+The formula is:
+```math
+ \sigma(x) = \frac{1}{1 + e^{-x}} 
+```
+
+```python
+def sigmoid(x):
+    """
+    Computes the sigmoid function.
+    
+    Args:
+        x (np.array or float): Input value(s).
+        
+    Returns:
+        np.array or float: The sigmoid of x.
+    """
+    # Your implementation here
+    return 0 # Replace
+```
+
+### 2c) Implement the forward pass for a single neuron.
 
 The forward pass calculates the neuron's output. It's a two-step process:
 1.  **Linear Step:** Compute $z = X \cdot W + b$.
@@ -167,30 +191,6 @@ def forward_pass(X, weights, bias):
     y_pred = None # Replace (You will call the sigmoid function here)
     
     return z, y_pred
-```
-
-### 2c) Implement the sigmoid activation function.
-
-The sigmoid function squashes its input to a value between 0 and 1. This is useful for binary classification because the output can be interpreted as a probability.
-
-The formula is:
-```math
- \sigma(x) = \frac{1}{1 + e^{-x}} 
-```
-
-```python
-def sigmoid(x):
-    """
-    Computes the sigmoid function.
-    
-    Args:
-        x (np.array or float): Input value(s).
-        
-    Returns:
-        np.array or float: The sigmoid of x.
-    """
-    # Your implementation here
-    return 0 # Replace
 ```
 
 ## 3. Gradient Descent for a Single Neuron
@@ -353,7 +353,7 @@ plt.show()
 
 To evaluate our model, we'll calculate its **accuracy**. Accuracy is the percentage of correctly classified data points.
 
-Since our neuron outputs a probability (a value between 0 and 1), we need to convert it to a binary prediction (0 or 1). A common way to do this is to use a **decision threshold** of 0.5: if $`\hat{y} \ge 0.5`$, we predict class 1; else if $`\hat{y} < 0.5`$, we predict class 0.
+Since our neuron outputs a probability (a value between 0 and 1), we need to convert it to a binary prediction (0 or 1). A common way to do this is to use a **decision threshold** of 0.5: if the network output is greater than 0.5, we predict class 1; else we predict class 0.
 
 ```python
 def evaluate_neuron(X, y, trained_weights, trained_bias):
