@@ -41,22 +41,31 @@ b. *Optional Visualization:* Create a scatter plot of your generated data points
 We will simulate a VAE's Encoder and Decoder with the following fixed parameters.
 
 *   **Encoder:** The encoder maps an input $x$ to the parameters of a latent distribution.
-    -   Mean: $\mu = \mathbf{W}_{\mu} x + b_{\mu}$
-    -   Log-variance: $\log \sigma^2 = \mathbf{W}_{ls} x + b_{ls}$
+    -   Mean: 
+```math
+\mu = \mathbf{W}_{\mu} x + b_{\mu}
+```
+    - Log-variance: 
+```math
+    \log \sigma^2 = \mathbf{W}_{ls} x + b_{ls}
+```
     -   Parameters:
-        ```
-        \mathbf{W}_{\mu} = \begin{pmatrix} 0.5 & 0.0 \\ 0.0 & 0.5 \end{pmatrix}, \quad b_{\mu} = \begin{pmatrix} -0.5 \\ -0.25 \end{pmatrix}
-        ```
-        ```
-        \mathbf{W}_{ls} = \begin{pmatrix} 0.1 & 0.0 \\ 0.0 & 0.1 \end{pmatrix}, \quad b_{ls} = \begin{pmatrix} -1.0 \\ -1.0 \end{pmatrix}
-        ```
+```math
+\mathbf{W}_{\mu} = \begin{pmatrix} 0.5 & 0.0 \\ 0.0 & 0.5 \end{pmatrix}, \quad b_{\mu} = \begin{pmatrix} -0.5 \\ -0.25 \end{pmatrix}
+```
+```math
+\mathbf{W}_{ls} = \begin{pmatrix} 0.1 & 0.0 \\ 0.0 & 0.1 \end{pmatrix}, \quad b_{ls} = \begin{pmatrix} -1.0 \\ -1.0 \end{pmatrix}
+```
 
 *   **Decoder:** The decoder maps a latent vector $z$ back to a reconstructed data point $x'$.
-    -   Reconstruction: $x' = \mathbf{W}_{dec} z + b_{dec}$
+    -   Reconstruction:
+```math
+x' = \mathbf{W}_{dec} z + b_{dec}
+```
     -   Parameters:
-        ```
-        \mathbf{W}_{dec} = \begin{pmatrix} 1.4 & 0.0 \\ 0.0 & 1.4 \end{pmatrix}, \quad b_{dec} = \begin{pmatrix} 1.5 \\ 1.0 \end{pmatrix}
-        ```
+```math
+\mathbf{W}_{dec} = \begin{pmatrix} 1.4 & 0.0 \\ 0.0 & 1.4 \end{pmatrix}, \quad b_{dec} = \begin{pmatrix} 1.5 \\ 1.0 \end{pmatrix}
+```
 
 > *Note: These parameters are fixed for this exercise. In a real VAE, these would be learned during training.*
 
