@@ -216,13 +216,12 @@ def calculate_gradients(X, y_true, y_pred):
             - dW (np.array): Gradient w.r.t. weights, shape (n_features, 1).
             - db (float): Gradient w.r.t. bias.
     """
-    m = X.shape[0]
     
     # Your implementation here
     # Hint: Use the formulas above. X.T is the transpose of X.
-    # The error term is (y_pred - y_true).
+    # The error term is (y_true - y_pred).
     error = None # Replace
-    dW = None # Replace
+    dW = None # Replace, REMEMBER TO AVERAGE RESULTS ON THE BATCH
     db = None # Replace
     
     return dW, db
